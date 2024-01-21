@@ -1,6 +1,5 @@
 import { useState } from "react";
 import "./App.css";
-import { tempWatchedData } from "./data";
 import Nav from "./components/Nav";
 import Main from "./components/Main";
 import Logo from "./components/Logo";
@@ -16,7 +15,7 @@ import { useEffect } from "react";
 
 function App() {
   const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState(tempWatchedData);
+  const [watched, setWatched] = useState([]);
   const [selectedMovieId, setSelectedMovieId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -32,6 +31,15 @@ function App() {
   const onMovieClose = () => {
     setSelectedMovieId(null);
   };
+
+  function onAddMovieToWatchList(movie) {
+    setWatched([...watched, movie]);
+  }
+
+  function onDeleteMovieFromWatchList(movie) {
+    const newWatched = watched.filter((w) => w.imdbID !== movie.imdbID);
+    setWatched(newWatched);
+  }
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -79,11 +87,16 @@ function App() {
             <MovieDetails
               movieId={selectedMovieId}
               onMovieClose={onMovieClose}
+              onAddMovieToWatchList={onAddMovieToWatchList}
+              watched={watched}
             />
           ) : (
             <>
               <WatchedSummary watched={watched} />
-              <WatchedList watched={watched} />
+              <WatchedList
+                watched={watched}
+                onDeleteMovieFromWatchList={onDeleteMovieFromWatchList}
+              />
             </>
           )}
         </Box>

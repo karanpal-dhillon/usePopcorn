@@ -1,10 +1,14 @@
 import PropTypes from "prop-types";
 const WatchedSummary = ({ watched }) => {
-  const average = (arr) => arr.reduce((a, b, i, arr) => a + b / arr.length, 0);
+  const average = (arr) => arr.reduce((a, b, _, arr) => a + b / arr.length, 0);
 
-  const avgImdbRating = average(watched.map((w) => w.imdbRating));
-  const avgUserRating = average(watched.map((w) => w.userRating));
-  const avgRuntime = average(watched.map((w) => w.runtime));
+  const avgImdbRating = Number(
+    average(watched.map((w) => w.imdbRating)),
+  ).toFixed(1);
+  const avgUserRating = Number(
+    average(watched.map((w) => w.userRating)),
+  ).toFixed(1);
+  const avgRuntime = Number(average(watched.map((w) => w.runtime))).toFixed(1);
   return (
     <div className="summary">
       <h2>Movies you watched</h2>

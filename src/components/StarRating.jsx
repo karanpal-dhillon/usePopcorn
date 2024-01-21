@@ -18,6 +18,7 @@ const StarRating = ({
   size = 48,
   messages = [],
   defaultRating = 0,
+  onSetRating = {},
 }) => {
   const textStyle = {
     lineHeight: "1",
@@ -27,6 +28,10 @@ const StarRating = ({
   const [rating, setRating] = useState(defaultRating);
   const [hoverRating, setHoverRating] = useState(0);
 
+  function handleRating(rating) {
+    setRating(rating);
+    onSetRating(rating);
+  }
   return (
     <div style={containerStyle}>
       <div style={starContainerStyle}>
@@ -36,7 +41,7 @@ const StarRating = ({
             color={color}
             size={size}
             fill={hoverRating ? i < hoverRating : i < rating}
-            onRate={() => setRating(i + 1)}
+            onRate={() => handleRating(i + 1)}
             onHoverIn={() => setHoverRating(i + 1)}
             onHoverOut={() => setHoverRating(0)}
           />
@@ -57,5 +62,6 @@ StarRating.propTypes = {
   size: PropTypes.number,
   messages: PropTypes.array,
   defaultRating: PropTypes.number,
+  onSetRating: PropTypes.func,
 };
 export default StarRating;
