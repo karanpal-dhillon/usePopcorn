@@ -63,6 +63,13 @@ const MovieDetails = ({
     },
     [movieId],
   );
+  useEffect(
+    function() {
+      if (title) document.title = title;
+    },
+    [title],
+  );
+
   if (isLoading) {
     return <p className="loader">Loading</p>;
   }

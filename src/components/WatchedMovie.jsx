@@ -29,5 +29,6 @@ const WatchedMovie = ({ movie, onDeleteMovieFromWatchList }) => {
 };
 WatchedMovie.propTypes = {
   movie: PropTypes.object,
+  onDeleteMovieFromWatchList: PropTypes.func,
 };
 export default WatchedMovie;
