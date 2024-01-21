@@ -43,6 +43,7 @@ const MovieDetails = ({
     onAddMovieToWatchList(newWatchedMovie);
     onMovieClose();
   };
+
   useEffect(
     function() {
       async function getMovieDetails() {
@@ -63,12 +64,28 @@ const MovieDetails = ({
     },
     [movieId],
   );
+
   useEffect(
     function() {
       if (title) document.title = title;
+      return () => {
+        document.title = "use popcorn";
+      };
     },
     [title],
   );
+
+  useEffect(() => {
+    function callback(e) {
+      if (e.code === "Escape") {
+        onMovieClose();
+      }
+    }
+    document.addEventListener("keydown", callback);
+    return function() {
+      document.removeEventListener("keydown", callback);
+    };
+  }, [onMovieClose]);
 
   if (isLoading) {
     return <p className="loader">Loading</p>;

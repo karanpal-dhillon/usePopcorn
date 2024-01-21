@@ -42,12 +42,14 @@ function App() {
   }
 
   useEffect(() => {
+    const controller = new AbortController();
     const fetchMovies = async () => {
       setIsLoading(true);
       setError(null);
       try {
         const res = await fetch(
           `https://www.omdbapi.com/?s=${query}&apikey=${apiKey}`,
+          { signal: controller.signal },
         );
         if (!res.ok)
           throw new Error("Some error occured. Try again some time later");
@@ -55,6 +57,7 @@ function App() {
         if (data.Response === "False") throw new Error("No movies found");
         setMovies(data.Search);
       } catch (err) {
+        if (err.name === "AbortError") return;
         setError(err.message);
       } finally {
         setIsLoading(false);
@@ -66,6 +69,9 @@ function App() {
       return;
     }
     fetchMovies();
+    return function() {
+      controller.abort();
+    };
   }, [query]);
   return (
     <>
