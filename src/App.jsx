@@ -15,7 +15,7 @@ import { useEffect } from "react";
 
 function App() {
   const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState([]);
+  const [watched, setWatched] = useState(() => loadWatchedFromLocalStorage());
   const [selectedMovieId, setSelectedMovieId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -36,10 +36,25 @@ function App() {
     setWatched([...watched, movie]);
   }
 
+  function loadWatchedFromLocalStorage() {
+    const wacthedFromLocalStorage = localStorage.getItem("watched");
+    if (!wacthedFromLocalStorage) {
+      return [];
+    }
+    return JSON.parse(wacthedFromLocalStorage);
+  }
+
   function onDeleteMovieFromWatchList(movie) {
     const newWatched = watched.filter((w) => w.imdbID !== movie.imdbID);
     setWatched(newWatched);
   }
+
+  useEffect(
+    function() {
+      localStorage.setItem("watched", JSON.stringify(watched));
+    },
+    [watched],
+  );
 
   useEffect(() => {
     const controller = new AbortController();
