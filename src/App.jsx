@@ -13,9 +13,10 @@ import WatchedList from "./components/WatchedList";
 import Err from "./components/Err";
 import { useEffect } from "react";
 import { useMovies } from "./useMovies";
+import { useLocalStorage } from "./useLocalStorage";
 
 function App() {
-  const [watched, setWatched] = useState(() => loadWatchedFromLocalStorage());
+  const [watched, setWatched] = useLocalStorage([], "watched");
   const [selectedMovieId, setSelectedMovieId] = useState(null);
   const [query, setQuery] = useState("Interstellar");
   const { movies, isLoading, error } = useMovies(query);
@@ -34,25 +35,10 @@ function App() {
     setWatched([...watched, movie]);
   }
 
-  function loadWatchedFromLocalStorage() {
-    const wacthedFromLocalStorage = localStorage.getItem("watched");
-    if (!wacthedFromLocalStorage) {
-      return [];
-    }
-    return JSON.parse(wacthedFromLocalStorage);
-  }
-
   function onDeleteMovieFromWatchList(movie) {
     const newWatched = watched.filter((w) => w.imdbID !== movie.imdbID);
     setWatched(newWatched);
   }
-
-  useEffect(
-    function() {
-      localStorage.setItem("watched", JSON.stringify(watched));
-    },
-    [watched],
-  );
 
   return (
     <>
