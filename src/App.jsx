@@ -11,7 +11,6 @@ import WatchedSummary from "./components/WatchedSummary";
 import MovieDetails from "./components/MovieDetails";
 import WatchedList from "./components/WatchedList";
 import Err from "./components/Err";
-import { useEffect } from "react";
 import { useMovies } from "./useMovies";
 import { useLocalStorage } from "./useLocalStorage";
 

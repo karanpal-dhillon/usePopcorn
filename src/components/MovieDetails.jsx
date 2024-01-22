@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { useEffect } from "react";
 import StarRating from "./StarRating";
+import { useKey } from "../useKey";
 
 const MovieDetails = ({
   movieId,
@@ -74,18 +75,7 @@ const MovieDetails = ({
     },
     [title],
   );
-
-  useEffect(() => {
-    function callback(e) {
-      if (e.code === "Escape") {
-        onMovieClose();
-      }
-    }
-    document.addEventListener("keydown", callback);
-    return function() {
-      document.removeEventListener("keydown", callback);
-    };
-  }, [onMovieClose]);
+  useKey("Escape", onMovieClose);
 
   if (isLoading) {
     return <p className="loader">Loading</p>;

@@ -1,24 +1,14 @@
 import PropTypes from "prop-types";
-import { useEffect } from "react";
 import { useRef } from "react";
+import { useKey } from "../useKey";
 export const SearchQuery = ({ query, setQuery }) => {
   const inputEl = useRef(null);
-  useEffect(
-    function() {
-      function callback(e) {
-        if (document.activeElement === inputEl) return;
-        if (e.code.toLowerCase() === "enter") {
-          inputEl.current.focus();
-          setQuery("");
-        }
-      }
-      document.addEventListener("keydown", callback);
-      return function() {
-        document.removeEventListener("keydown", callback);
-      };
-    },
-    [setQuery],
-  );
+
+  useKey("Enter", () => {
+    if (document.activeElement === inputEl) return;
+    inputEl.current.focus();
+    setQuery("");
+  });
 
   return (
     <input
